@@ -15,19 +15,23 @@
     "build": "pnpm run discover && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "typecheck": "astro check"
+    "typecheck": "astro check",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@chirag127/astro-chrome": "^0.1.7",
     "@fontsource-variable/inter": "^5.1.0",
     "@fontsource-variable/inter-tight": "^5.1.0",
     "@fontsource-variable/jetbrains-mono": "^5.1.0",
-    "astro": "^6.0.0",
+    "astro": "^7.4.7",
     "sharp": "^0.33.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.0",
     "@types/node": "^22.10.0",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "vitest": "^3.2.7",
+    "wrangler": "^4.120.1"
   }
 }

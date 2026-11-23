@@ -7,7 +7,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const APP_ROOT = path.resolve(__dirname, "..");
@@ -16,7 +16,7 @@ const PKG_DIR = path.join(REPO_ROOT, "projects", "npm-packages");
 
 const SCOPE = "@chirag127";
 
-function assignCategory(short) {
+export function assignCategory(short) {
   const n = short.toLowerCase();
   if (n.startsWith("astro-")) return "astro";
   if (n.startsWith("auth-")) return "auth";
@@ -38,7 +38,7 @@ function tryReadDescription(slugDir) {
   return "";
 }
 
-function humanize(short) {
+export function humanize(short) {
   // astro-shell → "Astro Shell"
   return short
     .split("-")
@@ -46,7 +46,7 @@ function humanize(short) {
     .join(" ");
 }
 
-function stubDescription(short, category) {
+export function stubDescription(short, category) {
   const map = {
     astro: `Astro integration: ${humanize(short)}. Drop-in building block for any oriz app.`,
     auth: `Cross-surface auth utility: ${humanize(short)}. Part of the oriz auth-core family.`,
@@ -55,17 +55,17 @@ function stubDescription(short, category) {
   return map[category] || `Oriz package ${humanize(short)}.`;
 }
 
-function pickSize(short) {
+export function pickSize(short) {
   // Deterministic stub by name length so cards look real.
   const sizes = ["4kb", "7kb", "9kb", "12kb", "15kb", "18kb", "22kb", "28kb"];
   return "~" + sizes[short.length % sizes.length];
 }
 
-function pickStars(short) {
+export function pickStars(short) {
   return (short.charCodeAt(0) % 5) + (short.length % 4); // 0-8
 }
 
-function pickLastPublish(idx) {
+export function pickLastPublish(idx) {
   const opts = [
     "2 days ago",
     "5 days ago",
@@ -139,4 +139,7 @@ function writeEmpty() {
   );
 }
 
-main();
+// Run only as CLI entrypoint, not when imported (e.g. by tests).
+if (import.meta.url === `file://${process.argv[1]}` || import.meta.url === pathToFileURL(process.argv[1] ?? "").href) {
+  main();
+}
